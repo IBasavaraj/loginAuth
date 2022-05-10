@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="styles.css"> -->
+    <title>Login</title>
+    <!-- <script>
+        function submitHandler() {
+            console.log('onsubmit handled');
+            const mobNumForm = document.getElementById("mblNumForm").value;
+            const _data = mblNumForm.elements["mobileNumber"].value;
+            fetch('https://nydk62oop8.execute-api.ap-south-1.amazonaws.com/dev/login', {
+                method: "POST",
+                body: "",
+                headers: { "Content-type": "application/json" }
+            })
+                .then(response => response.json())
+                .then(json => consolo.log(json))
+                .catch(err => console.log(err))
+        }
+    </script> -->
+</head>
+
+<body>
+    <form action="" id="form" onsubmit="submitHandler();return false;">
+        <input type="text" placeholder="Enter your Number" name="mobileNumber" id="mblNumForm">
+        <button type="submit">login</button>
+        <script>
+            let userId;
+            function submitHandler() {
+                // e.preventDefault();
+                // alert(JSON.stringify(""));
+                // return false;
+                // e.preventDefault();
+                // console.log('onsubmit handled');
+                const mobNumForm = document.getElementById("mblNumForm").value;
+                console.log(mobNumForm);
+                // const _data = mblNumForm.elements["mobileNumber"].value;
+
+                fetch('https://nydk62oop8.execute-api.ap-south-1.amazonaws.com/dev/login', {
+                    method: "POST",
+                    body: `phone_number=${mobNumForm}`,
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+                    }
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                        userId = data.responseData.userId;
+                        if(data.responseCode === 200) {
+                            console.log("navigated");
+                            window.location.replace("otp.html");
+                            console.log("navigated");
+                        }
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+            }
+        </script>
+    </form>
+</body>
+
+</html>
