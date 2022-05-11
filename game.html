@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game</title>
+</head>
+<body onload="getGames()">
+    <h1 style="text-align: center;">Games</h1>
+    <script>
+        function getGames() {
+            fetch('https://nydk62oop8.execute-api.ap-south-1.amazonaws.com/dev/games', {
+                method: "GET",
+                headers: {
+                    'access_token': localStorage.getItem('access_token')
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    if (data.responseCode === 200) {
+                        console.log("game page navigated");
+                        fetch('https://nydk62oop8.execute-api.ap-south-1.amazonaws.com/dev/game', {
+                            method: "POST",
+                            body: 'title="Knife Hit"&&imageURL="https://play-lh.googleusercontent.com/Ew7rWCeUu76dCNB1KG0Bw8tOB54VqicKBB8s5tFRHM4jY8ElkfGyYo6Mpyq8BxZHM0o"&&game_type="1"&&gameURL=""&&transaction_type="2"&&game_description="In January 2001"&&game_id="1"&&modes="[1,2]"&&categories="[4]"',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                                'access_token': localStorage.getItem('access_token')
+                            }
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                console.log(data);
+
+                                if (data.responseCode === 200) {
+                                    console.log("Done with the project");
+                                }
+                            })
+                            .catch(err => console.log(err));
+                    }
+                });
+        }
+    </script>
+</body>
+
+</html>

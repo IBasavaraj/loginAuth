@@ -5,32 +5,47 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <title>otp</title>
-    <script>
-        function submitHandler() {
-            const otp = document.getElementById("otp1").value;
-            alert(otp);
-            // otp.addEventListener("submit", () => {
-            // const otpNum = otp.elements["otp"];
 
-            fetch('https://nydk62oop8.execute-api.ap-south-1.amazonaws.com/dev/verifyOTP', {
-                method: "POST",
-                body: "otp=" + otp + "&user_id=33",
-                headers: { "Content-type": "application/json" }
-            })
-                .then(response => response.json())
-                .then(json => console.log(json))
-                .catch(err => console.log(err))
-        }
-    </script>
+    <title>otp</title>
+    
 </head>
 
 <body>
-    <form action="submit" method="post" id="otp" onsubmit="submitHandler()">
-        <input type="text" placeholder="Enter OTP" id="otp1">
-        <button type="submit">submit</button>
-    </form>
+
+    <input id="otp_input" type="text" placeholder="Enter OTP" id="otp1">
+    <button id="otp_submit" type="submit">submit</button>
+
+    <script>
+        document.getElementById("otp_submit").addEventListener("click", () => {
+            const otp = document.getElementById("otp_input").value;
+            fetch('https://nydk62oop8.execute-api.ap-south-1.amazonaws.com/dev/verifyOTP', {
+                method: "POST",
+                body: `user_id=${localStorage.getItem("user_id")}&&otp=${otp}`,
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    let accessToken = data.responseData.userData.access_token;
+                    console.log(accessToken);
+                    localStorage.setItem("access_token", accessToken);
+                    console.log(localStorage);
+
+                    
+                    if(data.responseCode === 200) {
+                            
+                            window.location.assign("game.html");
+                            console.log("navigated");
+                        }
+
+                })
+                .catch(err => console.log(err))
+                console.log("finally got it");
+        })
+        
+    </script>
 </body>
 
 </html>
